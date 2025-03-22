@@ -18,6 +18,7 @@ const humidityElement = document.getElementById('humidity');
 const pressureElement = document.getElementById('pressure');
 const uvIndexElement = document.getElementById('uv-index');
 const forecastContainer = document.getElementById('forecast-container');
+const appContainer = document.querySelector('.app-container') || document.body;
 
 // Weather condition mapping to icons
 const weatherImages = {
@@ -36,8 +37,129 @@ const weatherImages = {
 let latitude = 40.7128;
 let longitude = -74.0060;
 
+// Add Sa3do's personal branding to the page
+function addPersonalBranding() {
+  // Create the header element
+  const header = document.createElement('header');
+  header.className = 'sa3do-header';
+
+  // Create the title with a fun weather-related tagline
+  const title = document.createElement('h1');
+  title.innerHTML = "Sa3do's Weather Wonderland";
+
+  // Create a fun tagline
+  const tagline = document.createElement('p');
+  tagline.className = 'tagline';
+  tagline.textContent = "Weather Forecasts as Amazing as Sa3do!";
+
+  // Add elements to the header
+  header.appendChild(title);
+  header.appendChild(tagline);
+
+  // Add the header to the top of the page
+  const firstChild = appContainer.firstChild;
+  appContainer.insertBefore(header, firstChild);
+
+  // Add a footer with "created by" info
+  const footer = document.createElement('footer');
+  footer.className = 'sa3do-footer';
+  footer.innerHTML = `
+    <p>Proudly created by Sa3do - Future Weather Scientist 🌤️</p>
+    <div class="emoji-decoration">🌈 ☀️ 🌧️ ❄️ 🌪️</div>
+  `;
+
+  // Add the footer to the end of the page
+  appContainer.appendChild(footer);
+
+  // Add custom styling
+  addCustomStyling();
+}
+
+// Add custom styling for Sa3do's branding
+function addCustomStyling() {
+  const style = document.createElement('style');
+  style.textContent = `
+    .sa3do-header {
+      background: linear-gradient(135deg, #42e695 0%, #3bb2b8 100%);
+      color: white;
+      padding: 20px;
+      text-align: center;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      animation: fadeIn 1s ease-in-out;
+    }
+    
+    .sa3do-header h1 {
+      margin: 0;
+      font-size: 2.2em;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    }
+    
+    .tagline {
+      font-style: italic;
+      margin: 10px 0 0;
+      font-size: 1.2em;
+      opacity: 0.9;
+    }
+    
+    .sa3do-footer {
+      margin-top: 30px;
+      text-align: center;
+      padding: 15px;
+      background-color: #f8f9fa;
+      border-radius: 10px;
+      font-size: 0.9em;
+      color: #555;
+      box-shadow: 0 -2px 5px rgba(0,0,0,0.05);
+    }
+    
+    .emoji-decoration {
+      font-size: 1.5em;
+      margin-top: 10px;
+      letter-spacing: 10px;
+    }
+    
+    /* Add a fun hover effect on the forecast items for interactivity */
+    .forecast-item {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .forecast-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+    }
+    
+    /* Animation for header */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* Make the current weather display more exciting */
+    #weather-icon {
+      transition: transform 0.5s ease;
+    }
+    
+    #weather-icon:hover {
+      transform: scale(1.1) rotate(5deg);
+    }
+    
+    /* Sa3do's signature color for temperature */
+    #temperature {
+      color: #3bb2b8;
+      font-weight: bold;
+    }
+  `;
+
+  document.head.appendChild(style);
+}
+
 // Init
 document.addEventListener('DOMContentLoaded', () => {
+  // Add Sa3do's personal branding
+  addPersonalBranding();
+
   // Get user's location if permission granted
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
@@ -309,6 +431,37 @@ function updateUI(data) {
 
     forecastContainer.appendChild(forecastItem);
   });
+
+  // Add Sa3do's favorite weather fact - changes randomly each time
+  const weatherFacts = [
+    "Did you know? Lightning is 5 times hotter than the sun's surface!",
+    "Cool fact: Rain drops are actually shaped like tiny hamburgers, not tear drops!",
+    "Sa3do's weather tip: If you see cows lying down, it might rain soon!",
+    "Weather magic: No two snowflakes are exactly alike!",
+    "Sa3do's science: Hurricanes need warm water to form!",
+    "Amazing! The fastest recorded wind speed was 407 km/h during a tornado in Oklahoma!"
+  ];
+
+  const randomFact = weatherFacts[Math.floor(Math.random() * weatherFacts.length)];
+
+  // Add or update the weather fact element
+  let factElement = document.getElementById('sa3do-weather-fact');
+  if (!factElement) {
+    factElement = document.createElement('div');
+    factElement.id = 'sa3do-weather-fact';
+    factElement.style.margin = '20px 0';
+    factElement.style.padding = '10px';
+    factElement.style.backgroundColor = '#f0f8ff';
+    factElement.style.borderRadius = '8px';
+    factElement.style.borderLeft = '4px solid #3bb2b8';
+    factElement.style.fontSize = '0.9em';
+
+    // Insert after the current weather details
+    const currentWeatherContainer = document.querySelector('.current-weather') || temperatureElement.parentNode;
+    currentWeatherContainer.parentNode.insertBefore(factElement, currentWeatherContainer.nextSibling);
+  }
+
+  factElement.textContent = `🔍 Sa3do's Weather Fact: ${randomFact}`;
 }
 
 // Get appropriate weather icon based on condition
