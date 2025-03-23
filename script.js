@@ -104,7 +104,6 @@ function addCustomStyling() {
     }
     
     .sa3do-footer {
-      margin-top: 30px;
       text-align: center;
       padding: 15px;
       background-color: #f8f9fa;
