@@ -60,11 +60,11 @@ function addPersonalBranding() {
   const firstChild = appContainer.firstChild;
   appContainer.insertBefore(header, firstChild);
 
-  // Add a footer with "created by" info
+  // Add a footer with "created by" info and API attribution combined
   const footer = document.createElement('footer');
   footer.className = 'sa3do-footer';
   footer.innerHTML = `
-    <p>Proudly created by Sa3do - Future Weather Scientist 🌤️</p>
+    <p>Powered by OpenWeatherMap API | Proudly created by Sa3do - Future Weather Scientist 🌤️</p>
     <div class="emoji-decoration">🌈 ☀️ 🌧️ ❄️ 🌪️</div>
   `;
 
